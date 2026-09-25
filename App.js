@@ -17,6 +17,8 @@ import {
   Easing,
 } from "react-native";
 import Footer from "./Footer";
+import chalapathirao from "./assets/chalapathirao.png";
+
 
 const { width, height } = Dimensions.get("window");
 const DRAWER_WIDTH = width * 0.78;
@@ -98,12 +100,12 @@ const LEADERS = [
     bgColor: "#1E4D6B",
   },
   {
-    name: "Dr. P.V. Chalapathi Rao, IFS",
-    position:
-      "Vice Chairman and Managing Director (FAC), Andhra Pradesh Forest Development Corporation Ltd.",
-    image: `${LEADERS_BASE}chalapathirao.png`,
-    bgColor: "#2E8B57",
-  },
+  name: "Dr. P.V. Chalapathi Rao, IFS",
+  position:
+    "Vice Chairman and Managing Director (FAC), Andhra Pradesh Forest Development Corporation Ltd.",
+  image: chalapathirao,
+  bgColor: "#2E8B57",
+}
 ];
 
 // ============ NOTIFICATIONS DATA ============
@@ -528,10 +530,14 @@ function HomeScreen() {
               <View style={styles.leaderImageWrapVertical}>
                 <View style={styles.leaderImageBorderVertical}>
                   <Image
-                    source={{ uri: leader.image }}
-                    style={styles.leaderImageVertical}
-                    resizeMode="cover"
-                  />
+  source={
+    typeof leader.image === "string"
+      ? { uri: leader.image }
+      : leader.image
+  }
+  style={styles.leaderImageVertical}
+  resizeMode="cover"
+/>
                 </View>
                 <View
                   style={[
