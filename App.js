@@ -18,6 +18,7 @@ import {
 } from "react-native";
 import Footer from "./Footer";
 import chalapathirao from "./assets/chalapathirao.png";
+import apfdcllogo from "./assets/apfdcllogo.png";
 
 
 const { width, height } = Dimensions.get("window");
@@ -40,7 +41,7 @@ const APFDCL_DATA = {
     "3rd Floor, P.V.S. Land Mark, Near APIIC Towers, Mangalagiri, Guntur District, AP - 522503",
   phone: "08645-297211 / 08645-297221",
   email: "vcmd_apfdc@yahoo.co.in / vcmd.apfdcl@gmail.com",
-  website: "www.apfdcl.com",
+  website: "https://apfdcl.ap.gov.in/",
   aboutUs:
     "Andhra Pradesh Forest Development Corporation Limited (APFDCL) is a Government of Andhra Pradesh undertaking, functioning under the administrative control of the Environment, Forests, Science & Technology (E.F.S.&T.) Department. Established with the objective of raising plantations to meet the raw material requirements of wood-based industries, APFDCL is committed to the intensive development and scientific management of forest plantations.",
 };
@@ -428,11 +429,17 @@ export default function App() {
         </View>
         <TouchableOpacity
           style={styles.headerRightBtn}
-          onPress={() => Linking.openURL("http://www.apfdcl.com")}
+          onPress={() => Linking.openURL("http://https://apfdcl.ap.gov.in/")}
           activeOpacity={0.7}
           hitSlop={10}
         >
-          <Text style={styles.headerRightIcon}>🌐</Text>
+       <Image
+  source={apfdcllogo}
+  style={{
+    height: 30,
+    width: 30,
+  }}
+/>
         </TouchableOpacity>
       </View>
 
@@ -1044,7 +1051,7 @@ function ContactScreen() {
     Linking.openURL(`mailto:${APFDCL_DATA.email.split(" / ")[0]}`);
   };
   const handleWebsite = () => {
-    Linking.openURL("http://www.apfdcl.com");
+    Linking.openURL("http://https://apfdcl.ap.gov.in/");
   };
 
   return (
@@ -1110,7 +1117,7 @@ function ContactScreen() {
           <Text style={styles.sectionTitle}>Official Website</Text>
         </View>
         <TouchableOpacity style={styles.websiteButton} onPress={handleWebsite}>
-          <Text style={styles.websiteButtonText}>Visit www.apfdcl.com</Text>
+          <Text style={styles.websiteButtonText}>Visit https://apfdcl.ap.gov.in/</Text>
         </TouchableOpacity>
       </View>
     </View>
