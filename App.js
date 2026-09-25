@@ -1266,7 +1266,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     letterSpacing: 2.5,
   },
-  headerSubtitle: { fontSize: 10, color: "#A5D6A7", marginTop: 2, letterSpacing: 0.5 },
+  headerSubtitle: { fontSize: 10, color: "white", marginTop: 2, letterSpacing: 0.5 },
   headerRightBtn: {
     width: 40,
     height: 40,

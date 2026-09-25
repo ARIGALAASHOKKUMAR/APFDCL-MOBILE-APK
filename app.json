@@ -21,10 +21,10 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.ashokarigala.apfdcapk"
+      "bundleIdentifier": "in.gov.ap.apfdcl"
     },
     "android": {
-      "package": "com.ashokarigala.apfdcapk",
+      "package": "in.gov.ap.apfdcl",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/apfdcllogo.png",
