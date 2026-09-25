@@ -5,7 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  SafeAreaView,
+  
   StatusBar,
   Linking,
   Dimensions,
@@ -16,9 +16,16 @@ import {
   FlatList,
   Easing,
 } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Alert } from 'react-native';
+
 import Footer from "./Footer";
 import chalapathirao from "./assets/chalapathirao.png";
 import apfdcllogo from "./assets/apfdcllogo.png";
+import { useVideoPlayer, VideoView } from 'expo-video';
+const videoSource = 'https://apfdcl.ap.gov.in/uploads/dashboard/baystaRlaunch.mp4';
+
+
 
 
 const { width, height } = Dimensions.get("window");
@@ -150,6 +157,8 @@ const AWARDS = [
 
 // ============ MENU DATA ============
 const MENU_ITEMS = [
+  { id: "Home", label: "Home", icon: "🏠", type: "tab", tab: "home" },
+
   {
     id: "About Us",
     label: "About Us",
@@ -211,9 +220,6 @@ const MENU_ITEMS = [
       },
     ],
   },
-  { id: "Home", label: "Home", icon: "🏠", type: "tab", tab: "home" },
-  { id: "About", label: "About APFDCL", icon: "ℹ️", type: "tab", tab: "about" },
-  { id: "Projects", label: "Projects", icon: "🌳", type: "tab", tab: "projects" },
   { id: "Contact", label: "Contact", icon: "📞", type: "tab", tab: "contact" },
 ];
 
@@ -280,21 +286,33 @@ function Drawer({ visible, onClose, onNavigate }) {
     setExpandedItem((prev) => (prev === itemId ? null : itemId));
   };
 
-  const handlePress = async (item) => {
-    if (item.children) {
-      toggleItem(item.id);
-    } else if (item.type === "pdf" && item.url) {
-      try {
-        const supported = await Linking.canOpenURL(item.url);
-        if (supported) await Linking.openURL(item.url);
-      } catch (e) {
-        console.warn("Cannot open URL:", item.url);
-      }
-    } else if (item.type === "tab" && item.tab) {
-      onNavigate(item.tab);
-      onClose();
-    }
-  };
+
+const handlePress = async (item) => {
+  // ✅ Home and Contact work normally
+  if (item.type === "home") {
+    onNavigate("Home");
+    onClose();
+    return;
+  }
+
+  if (item.type === "contact") {
+    onNavigate("Contact");
+    onClose();
+    return;
+  }
+
+  // ⚠️ Everything else → Under Development alert
+  if (item.children) {
+    toggleItem(item.id); // expand/collapse still works
+    return;
+  }
+
+  Alert.alert(
+    "Under Development",
+    `"${item.title || item.name || "This feature"}" is currently under development. Please check back later.`,
+    [{ text: "OK" }]
+  );
+};
 
   return (
     <Modal
@@ -322,7 +340,7 @@ function Drawer({ visible, onClose, onNavigate }) {
             <View style={{ flex: 1 }}>
               <Text style={styles.drawerTitle}>APFDCL</Text>
               <Text style={styles.drawerSubtitle}>
-                Forest Development Corporation
+                A.P Forest Development Corporation Limited
               </Text>
             </View>
             <TouchableOpacity onPress={onClose} hitSlop={10}>
@@ -412,6 +430,7 @@ export default function App() {
     }
   };
 
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#0D3B0F" />
@@ -419,29 +438,24 @@ export default function App() {
       <View style={styles.header}>
         <HamburgerIcon onPress={() => setDrawerOpen(true)} />
         <View style={styles.headerCenter}>
-          <View style={styles.headerLogoRow}>
-            <Text style={styles.headerLogo}>🌲</Text>
-            <Text style={styles.headerTitle}>APFDCL</Text>
-          </View>
-          <Text style={styles.headerSubtitle}>
-            Forest Development Corporation
-          </Text>
-        </View>
+  <View style={styles.headerLogoRow}>
+    <Image source={apfdcllogo} style={{ height: 30, width: 30 }} />
+  </View>
+  <Text style={styles.headerSubtitle}>
+    A.P Forest Development Corporation Limited
+  </Text>
+</View>
         <TouchableOpacity
           style={styles.headerRightBtn}
           onPress={() => Linking.openURL("http://https://apfdcl.ap.gov.in/")}
           activeOpacity={0.7}
           hitSlop={10}
         >
-       <Image
-  source={apfdcllogo}
-  style={{
-    height: 30,
-    width: 30,
-  }}
-/>
+       
         </TouchableOpacity>
       </View>
+
+      
 
       <ScrollView
         style={styles.content}
@@ -452,36 +466,6 @@ export default function App() {
          <Footer/>
       </ScrollView>
 
-      {/* <View style={styles.tabBar}>
-        {TABS.map((tab) => {
-          const isActive = activeTab === tab.id;
-          return (
-            <TouchableOpacity
-              key={tab.id}
-              style={[styles.tabItem, isActive && styles.tabItemActive]}
-              onPress={() => setActiveTab(tab.id)}
-              activeOpacity={0.7}
-            >
-              <View
-                style={[
-                  styles.tabIconWrap,
-                  isActive && styles.tabIconWrapActive,
-                ]}
-              >
-                <Text style={styles.tabIcon}>{tab.icon}</Text>
-              </View>
-              <Text
-                style={[
-                  styles.tabLabel,
-                  isActive && styles.tabLabelActive,
-                ]}
-              >
-                {tab.label}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View> */}
 
       <Drawer
         visible={drawerOpen}
@@ -497,19 +481,26 @@ function HomeScreen() {
   const [galleryModal, setGalleryModal] = useState(null);
   const [awardModal, setAwardModal] = useState(null);
 
+   const player = useVideoPlayer(videoSource, (player) => {
+    player.loop = true;
+    player.play();
+  });
+
   return (
     <View>
       {/* Hero */}
       <View style={styles.hero}>
         <View style={styles.heroOverlay} />
         <View style={styles.heroContent}>
-          <View style={styles.heroBadgeTop}>
-            <Text style={styles.heroBadgeTopText}>🌿 GOVERNMENT UNDERTAKING</Text>
-          </View>
+          
           <Text style={styles.heroTitle}>{APFDCL_DATA.name}</Text>
+           <VideoView
+        style={styles.video}
+        player={player}
+        allowsFullscreen
+        allowsPictureInPicture
+      />
           <View style={styles.heroDivider} />
-          <Text style={styles.heroTagline}>{APFDCL_DATA.tagline}</Text>
-         
         </View>
       </View>
 
@@ -722,7 +713,6 @@ function NotificationsMarquee() {
           <View style={styles.marqueeLiveDot} />
           <Text style={styles.marqueeBadgeText}>LATEST</Text>
         </View>
-        <Text style={styles.marqueeTapHint}>Tap any notice to open PDF</Text>
       </View>
 
       <View
@@ -1227,6 +1217,12 @@ function getSpeciesColor(index) {
 // ============ STYLES ============
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#F5F7FA" },
+   video: {
+    width: "100%",
+    height: 200,
+    padding:0,
+    margin:0
+  },
 
   // Header
   header: {

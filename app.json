@@ -6,18 +6,31 @@
     "orientation": "portrait",
     "icon": "./assets/apfdcllogo.png",
     "userInterfaceStyle": "light",
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "buildArchs": [
+              "arm64-v8a"
+            ]
+          }
+        }
+      ],
+      "expo-video"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ashokarigala.apfdcapk"
     },
     "android": {
+      "package": "com.ashokarigala.apfdcapk",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/apfdcllogo.png",
         "backgroundImage": "./assets/apfdcllogo.png",
         "monochromeImage": "./assets/apfdcllogo.png"
-      },
-      "package": "com.ashokarigala.apfdcapk"
+      }
     },
     "web": {
       "favicon": "./assets/apfdcllogo.png"
